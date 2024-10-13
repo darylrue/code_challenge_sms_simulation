@@ -22,9 +22,7 @@ class SenderTest(TestCase):
         # estimated machine processing time = 0.000033 seconds (benchmarked on Daryl's MacBook)
         # estimated processing time = mean_send_time + machine processing time (0.0001 + 0.000033)
         expected_processing_time = mean_send_time + 0.000033
-        expected_processing_time_min = expected_processing_time - (expected_processing_time * 0.1)
-        expected_processing_time_max = expected_processing_time + (expected_processing_time * 0.1)
-        self.assertTrue(expected_processing_time_min <= elapsed_time / num_msgs <= expected_processing_time_max)
+        self.assertAlmostEqual(expected_processing_time, elapsed_time / num_msgs, delta=0.1)
 
     def test_failure_rate_zero(self):
         num_msgs = 10000
@@ -46,10 +44,8 @@ class SenderTest(TestCase):
         output_q, failure_q = Queue(), Queue()
         failure_rate = 0.1
         Sender(input_q, output_q, failure_q, mean_send_time=0, send_time_deviation=0, failure_rate=failure_rate)
-        expected_failure_rate_min = failure_rate - (failure_rate * 0.1)
-        expected_failure_rate_max = failure_rate + (failure_rate * 0.1)
         actual_failure_rate = failure_q.qsize() / num_msgs
-        self.assertTrue(expected_failure_rate_min <= actual_failure_rate <= expected_failure_rate_max)
+        self.assertAlmostEqual(failure_rate, actual_failure_rate, delta=0.1)
 
     def test_stop_event_before_finished(self):
         num_msgs = 10000
