@@ -22,11 +22,12 @@ You are free in the programming language you choose, but your code should come w
 Please submit the code test at least two business days before the interview, so we have time to review it.
 
 
-## Assumptions
+## Constraints
 - Phone numbers are in the form xxx-xxx-xxxx, where 0-9 are valid digits in any position
+- The text of messages is between 1 and 100 characters in length and consists of any printable ASCII characters
 
 ## Prerequisites
-- `python3` available on the system PATH if running on bare metal (Tested with Python 3.10)
+- `python3` is available on the environment PATH (Tested with Python 3.10)
 
 ## Scripts for testing / running this project
 
@@ -36,4 +37,4 @@ NOTE: These scripts are intended for use on a *nix system or WSL on a Windows sy
 |----------------|-----------------------------------------------------------------------------------------------------------|
 | create_venv.sh | Creates a virtual environment at `.venv` and installs the latest pip dependencies from `requirements.txt` |
 | pin_reqs.sh    | Records the current dependency versions in `.venv` to `static_requirements.txt`                           |
-
+| run_tests.sh   | Runs all unit tests in the project                                                                        |
