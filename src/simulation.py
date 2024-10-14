@@ -18,6 +18,7 @@ def run(
         failure_rate: float,
         display_update_secs: Optional[float] = None) -> None:
     """
+    Run the simulation with the given parameters.
 
     :param num_msgs: the number of messages to generate
     :param num_senders: the number of sender threads to start
