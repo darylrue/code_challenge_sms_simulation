@@ -1,5 +1,10 @@
 #!/bin/sh
 
+if [ -d .venv ]; then
+    printf '\nRemoving existing virtual environment at %s/.venv\n' "$PWD"
+    rm -rf .venv
+fi
+
 printf '\nCreating Python virtual environment at %s/.venv\n' "$PWD"
 python3 -m venv .venv
 . .venv/bin/activate

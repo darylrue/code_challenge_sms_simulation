@@ -9,6 +9,8 @@ PROJECT_DIR = str(Path(__file__).resolve().parent.parent)
 if PROJECT_DIR not in sys.path:
     sys.path.append(PROJECT_DIR)
 
+from src import status_table
+from src.arg_parsing import _parse_int_arg, _parse_float_arg
 from src.message import Message
 from src.producer import gen_msg_queue
 from src.sender import Sender
@@ -22,7 +24,7 @@ def run_simulation(
         max_deviation: float,
         failure_rate: float) -> None:
 
-    print(f'Generating {num_msgs} messages...')
+    print(f'\nGenerating {num_msgs} messages...')
     input_q = gen_msg_queue(num_msgs)
 
     output_q: Queue[Message] = Queue()
@@ -38,12 +40,10 @@ def run_simulation(
     print('Starting Monitor...')
     monitor = Monitor(output_q, failure_q, time.time(), num_senders)
 
-    while not input_q.empty():
-        time.sleep(1)
-        print(f'Monitor status: {monitor.status().__dict__}')  # TODO make into static display
-    print(f'Monitor status: {monitor.status().__dict__}')
+    # Pretty console output
+    status_table.display(input_q, monitor, num_msgs)
 
-    print('All messages processed. Stopping senders...')
+    print('All messages processed. Stopping senders...\n')
     stop_event.set()
     for thread in sender_threads:
         thread.join()
@@ -56,30 +56,6 @@ def _process_args() -> tuple:
     max_deviation = _parse_float_arg(sys.argv[4], 'max_deviation', req_non_negative=True)
     failure_rate = _parse_float_arg(sys.argv[5], 'failure_rate', req_non_negative=True)
     return num_messages, num_senders, mean_processing_time, max_deviation, failure_rate
-
-
-def _parse_int_arg(arg: str, arg_name: str, req_positive: bool = False) -> int:
-    try:
-        value = int(arg)
-    except ValueError:
-        print(f'Error: {arg_name} must be an integer')
-        sys.exit(1)
-    if req_positive and value < 1:
-        print(f'Error: {arg_name} must be a positive integer')
-        sys.exit(1)
-    return value
-
-
-def _parse_float_arg(arg: str, arg_name: str, req_non_negative: bool = False) -> float:
-    try:
-        value = float(arg)
-    except ValueError:
-        print(f'Error: {arg_name} must be a float')
-        sys.exit(1)
-    if req_non_negative and value < 0:
-        print(f'Error: {arg_name} must be a non-negative float')
-        sys.exit(1)
-    return value
 
 
 if __name__ == '__main__':
