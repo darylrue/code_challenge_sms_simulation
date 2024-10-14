@@ -1,5 +1,7 @@
 import time
 from queue import Queue
+from typing import Optional
+
 from rich.live import Live
 from rich.table import Table
 
@@ -7,12 +9,28 @@ from src.message import Message
 from src.monitor import Monitor, MonitorStatus
 
 
-def display(input_q: Queue[Message], monitor: Monitor, total_num_msgs: int) -> None:
+def display(
+        input_q: Queue[Message],
+        monitor: Monitor,
+        total_num_msgs: int,
+        display_update_secs: Optional[float] = None) -> None:
+    """
+    Display the status of the message processing in a table format.
+
+    :param input_q: the queue from which messages are being processed
+    :param monitor: the Monitor object that is tracking the status of the message processing
+    :param total_num_msgs: the total number of messages to be processed
+    :param display_update_secs: the number of seconds to wait between updates to the display (Default: 0.75)
+    :return: None
+    """
+    if display_update_secs is None:
+        display_update_secs = 0.75
+
     print()
     with Live(_generate_table(monitor.status(), total_num_msgs), refresh_per_second=4) as live:
         while not input_q.empty():
             live.update(_generate_table(monitor.status(), total_num_msgs))
-            time.sleep(0.75)
+            time.sleep(display_update_secs)
         live.update(_generate_table(monitor.status(), total_num_msgs))
     print()
 

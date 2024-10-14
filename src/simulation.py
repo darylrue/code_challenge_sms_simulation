@@ -1,7 +1,7 @@
 import time
 from queue import Queue
 from threading import Thread, Event
-from typing import List
+from typing import List, Optional
 
 from src import status_table
 from src.message import Message
@@ -15,7 +15,18 @@ def run(
         num_senders: int,
         mean_proc_time: float,
         max_deviation: float,
-        failure_rate: float) -> None:
+        failure_rate: float,
+        display_update_secs: Optional[float] = None) -> None:
+    """
+
+    :param num_msgs: the number of messages to generate
+    :param num_senders: the number of sender threads to start
+    :param mean_proc_time: the mean processing time for a message
+    :param max_deviation: the maximum deviation from the mean processing time
+    :param failure_rate: the rate at which messages will fail (0.0 - 1.0)
+    :param display_update_secs: the number of seconds to wait between updates to the display (Default: 0.75)
+    :return: None
+    """
 
     print(f'\nGenerating {num_msgs} messages...')
     input_q = gen_msg_queue(num_msgs)
@@ -34,7 +45,7 @@ def run(
     monitor = Monitor(output_q, failure_q, time.time(), num_senders)
 
     # Pretty console output
-    status_table.display(input_q, monitor, num_msgs)
+    status_table.display(input_q, monitor, num_msgs, display_update_secs)
 
     print('All messages processed. Stopping senders...\n')
     stop_event.set()
