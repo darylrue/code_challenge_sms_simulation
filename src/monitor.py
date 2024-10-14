@@ -56,5 +56,5 @@ class Monitor:
         avg_msg_time = (time.time() - self._starting_timestamp) / avg_sender_msgs if avg_sender_msgs > 0 else 0
         return MonitorStatus(self._output_q.qsize(), self._failure_q.qsize(), avg_msg_time)
 
-    def stop(self):
+    def stop(self) -> None:
         self.final_status = self.status()

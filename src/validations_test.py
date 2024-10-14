@@ -5,11 +5,11 @@ from src.validations import is_valid_phone_number, is_valid_text
 
 class ValidationsTest(TestCase):
 
-    def test_valid_phone_number(self):
+    def test_valid_phone_number(self) -> None:
         self.assertTrue(is_valid_phone_number('123-456-7890'))
 
-    def test_invalid_phone_number(self):
-        self.assertFalse(is_valid_phone_number(None))
+    def test_invalid_phone_number(self) -> None:
+        self.assertFalse(is_valid_phone_number(None))  # type: ignore[arg-type]
         self.assertFalse(is_valid_phone_number(''))
         self.assertFalse(is_valid_phone_number('123-456-789'))
         self.assertFalse(is_valid_phone_number('123-456-78901'))
@@ -26,12 +26,12 @@ class ValidationsTest(TestCase):
         self.assertFalse(is_valid_phone_number('123-456-78a0'))
         self.assertFalse(is_valid_phone_number('123-456-789a'))
 
-    def test_valid_text(self):
+    def test_valid_text(self) -> None:
         self.assertTrue(is_valid_text('This is valid text.'))
         self.assertTrue(is_valid_text('a'))
 
-    def test_invalid_text(self):
-        self.assertFalse(is_valid_text(None))
+    def test_invalid_text(self) -> None:
+        self.assertFalse(is_valid_text(None))  # type: ignore[arg-type]
         self.assertFalse(is_valid_text(''))
         self.assertFalse(is_valid_text('abc\x01'))
         self.assertFalse(is_valid_text('This text has too many characters because its length is greater than 100.'

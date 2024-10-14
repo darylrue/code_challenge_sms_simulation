@@ -49,7 +49,7 @@ class Sender:
         self._idle_wait_time: float = idle_wait_time
         self._start()
 
-    def _start(self):
+    def _start(self) -> None:
         if self._stop_event is None:
             # Process messages until the input queue is empty
             while not self._input_q.empty():
@@ -67,7 +67,7 @@ class Sender:
                 except queue.Empty:
                     self._stop_event.wait(self._idle_wait_time)
 
-    def _process_msg(self, msg: Message):
+    def _process_msg(self, msg: Message) -> None:
         wait_time = uniform(self._send_time_min, self._send_time_max) - MACHINE_MSG_PROC_TIME  # see src/constants.py
         if wait_time > 0:
             if self._stop_event is None:

@@ -15,7 +15,13 @@ from src.sender import Sender
 from src.monitor import Monitor
 
 
-def run_simulation(num_msgs: int, num_senders: int, mean_proc_time: float, max_deviation: float, failure_rate: float):
+def run_simulation(
+        num_msgs: int,
+        num_senders: int,
+        mean_proc_time: float,
+        max_deviation: float,
+        failure_rate: float) -> None:
+
     print(f'Generating {num_msgs} messages...')
     input_q = gen_msg_queue(num_msgs)
 
@@ -43,7 +49,7 @@ def run_simulation(num_msgs: int, num_senders: int, mean_proc_time: float, max_d
         thread.join()
 
 
-def _process_args():
+def _process_args() -> tuple:
     num_messages = _parse_int_arg(sys.argv[1], 'num_messages', req_positive=True)
     num_senders = _parse_int_arg(sys.argv[2], 'num_senders', req_positive=True)
     mean_processing_time = _parse_float_arg(sys.argv[3], 'mean_processing_time', req_non_negative=True)
@@ -52,7 +58,7 @@ def _process_args():
     return num_messages, num_senders, mean_processing_time, max_deviation, failure_rate
 
 
-def _parse_int_arg(arg: str, arg_name: str, req_positive: bool = False):
+def _parse_int_arg(arg: str, arg_name: str, req_positive: bool = False) -> int:
     try:
         value = int(arg)
     except ValueError:
@@ -64,7 +70,7 @@ def _parse_int_arg(arg: str, arg_name: str, req_positive: bool = False):
     return value
 
 
-def _parse_float_arg(arg: str, arg_name: str, req_non_negative: bool = False):
+def _parse_float_arg(arg: str, arg_name: str, req_non_negative: bool = False) -> float:
     try:
         value = float(arg)
     except ValueError:

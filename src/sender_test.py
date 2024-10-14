@@ -11,43 +11,43 @@ from src.sender import Sender
 class SenderTest(TestCase):
 
     @unittest.skip("This test is time-based and machine-dependent and should not be run in CI/CD pipelines.")
-    def test_processing_time(self):
+    def test_processing_time(self) -> None:
         num_msgs = 10000
         input_q = gen_msg_queue(num_msgs)
-        output_q, failure_q = Queue(), Queue()
+        output_q, failure_q = Queue(), Queue()  # type: (Queue, Queue)
         start_ts = time.time()
         mean_send_time = 0.0001
         Sender(input_q, output_q, failure_q, mean_send_time=mean_send_time, send_time_deviation=0.00001, failure_rate=0)
         elapsed_time = time.time() - start_ts
         self.assertAlmostEqual(mean_send_time, elapsed_time / num_msgs, delta=0.1)
 
-    def test_failure_rate_zero(self):
+    def test_failure_rate_zero(self) -> None:
         num_msgs = 10000
         input_q = gen_msg_queue(num_msgs)
-        output_q, failure_q = Queue(), Queue()
+        output_q, failure_q = Queue(), Queue()  # type: (Queue, Queue)
         Sender(input_q, output_q, failure_q, mean_send_time=0, send_time_deviation=0, failure_rate=0)
         self.assertTrue(failure_q.empty())
 
-    def test_failure_rate_max(self):
+    def test_failure_rate_max(self) -> None:
         num_msgs = 10000
         input_q = gen_msg_queue(num_msgs)
-        output_q, failure_q = Queue(), Queue()
+        output_q, failure_q = Queue(), Queue()  # type: (Queue, Queue)
         Sender(input_q, output_q, failure_q, mean_send_time=0, send_time_deviation=0, failure_rate=1)
         self.assertTrue(failure_q.qsize() == num_msgs)
 
-    def test_failure_rate_custom(self):
+    def test_failure_rate_custom(self) -> None:
         num_msgs = 10000
         input_q = gen_msg_queue(num_msgs)
-        output_q, failure_q = Queue(), Queue()
+        output_q, failure_q = Queue(), Queue()  # type: (Queue, Queue)
         failure_rate = 0.1
         Sender(input_q, output_q, failure_q, mean_send_time=0, send_time_deviation=0, failure_rate=failure_rate)
         actual_failure_rate = failure_q.qsize() / num_msgs
         self.assertAlmostEqual(failure_rate, actual_failure_rate, delta=0.1)
 
-    def test_stop_event_before_finished(self):
+    def test_stop_event_before_finished(self) -> None:
         num_msgs = 10000
         input_q = gen_msg_queue(num_msgs)
-        output_q, failure_q = Queue(), Queue()
+        output_q, failure_q = Queue(), Queue()  # type: (Queue, Queue)
         stop_event = Event()
         sender_thread = Thread(target=Sender, args=(input_q, output_q, failure_q, stop_event))
         sender_thread.start()
@@ -56,10 +56,10 @@ class SenderTest(TestCase):
         msgs_processed = output_q.qsize() + failure_q.qsize()
         self.assertTrue(msgs_processed < num_msgs)
 
-    def test_stop_event_after_finished(self):
+    def test_stop_event_after_finished(self) -> None:
         num_msgs = 10
         input_q = gen_msg_queue(num_msgs)
-        output_q, failure_q = Queue(), Queue()
+        output_q, failure_q = Queue(), Queue()  # type: (Queue, Queue)
         stop_event = Event()
         sender_thread = Thread(target=Sender, args=(input_q, output_q, failure_q, stop_event, 0, 0))
         sender_thread.start()

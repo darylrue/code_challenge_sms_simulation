@@ -33,13 +33,21 @@ Please submit the code test at least two business days before the interview, so 
 
 NOTE: These scripts are intended for use on a *nix system or WSL on a Windows system.
 
-| Script         | Function                                                                                                  |
-|----------------|-----------------------------------------------------------------------------------------------------------|
-| create_venv.sh | Creates a virtual environment at `.venv` and installs the latest pip dependencies from `requirements.txt` |
-| pin_reqs.sh    | Records the current dependency versions in `.venv` to `static_requirements.txt`                           |
-| run_tests.sh   | Runs all unit tests in the project                                                                        |
+| Script           | Function                                                                                                                                                                                                     |
+|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| create_venv.sh   | Creates a virtual environment at `.venv` and installs the latest pip dependencies from `requirements.txt`                                                                                                    |
+| pin_reqs.sh      | Records the current dependency versions in `.venv` to `static_requirements.txt`                                                                                                                              |
+| activate_venv.sh | Creates a virtual environment at `.venv` (if it doesn't exist) using `static_requirements.txt` and activates it                                                                                              |
+| run_tests.sh     | Runs all unit tests in the project                                                                                                                                                                           |
+| lint.sh          | Runs the linter on the project ([Flake8](https://flake8.pycqa.org/en/4.0.1/) and [Mypy](https://mypy.readthedocs.io/en/stable/getting_started.html) must be installed and available on the environment PATH) |
 
 ## Running the simulation
+Activate the virtual environment:
+```shell
+. ./activate_venv.sh  # or source ./activate_venv.sh
+```
+
+Run the simulation:
 ```shell
 python3 src/start.py <num_messages> <num_senders> <mean_processing_time> <max_deviation> <failure_rate>
 
@@ -47,4 +55,4 @@ example:
 python3 src/start.py 1000 4 0.01 0.001 0.2
 ```
 Starts the simulation with 1000 messages, 4 senders, a mean message processing time of 0.01 seconds with a max
-deviation in message processing time of 0.001 seconds, and a message failure rate of 0.2.
+deviation in message processing time of 0.001 seconds, and a message failure rate of 0.2 (i.e. 20%).
