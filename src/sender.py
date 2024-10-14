@@ -5,6 +5,7 @@ from random import uniform
 from threading import Event
 from typing import Optional
 
+from src.constants import MACHINE_MSG_PROC_TIME
 from src.message import Message
 
 
@@ -67,7 +68,7 @@ class Sender:
                     self._stop_event.wait(self._idle_wait_time)
 
     def _process_msg(self, msg: Message):
-        wait_time = uniform(self._send_time_min, self._send_time_max)
+        wait_time = uniform(self._send_time_min, self._send_time_max) - MACHINE_MSG_PROC_TIME  # see src/constants.py
         if wait_time > 0:
             if self._stop_event is None:
                 time.sleep(wait_time)

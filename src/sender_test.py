@@ -19,10 +19,7 @@ class SenderTest(TestCase):
         mean_send_time = 0.0001
         Sender(input_q, output_q, failure_q, mean_send_time=mean_send_time, send_time_deviation=0.00001, failure_rate=0)
         elapsed_time = time.time() - start_ts
-        # estimated machine processing time = 0.000033 seconds (benchmarked on Daryl's MacBook)
-        # estimated processing time = mean_send_time + machine processing time (0.0001 + 0.000033)
-        expected_processing_time = mean_send_time + 0.000033
-        self.assertAlmostEqual(expected_processing_time, elapsed_time / num_msgs, delta=0.1)
+        self.assertAlmostEqual(mean_send_time, elapsed_time / num_msgs, delta=0.1)
 
     def test_failure_rate_zero(self):
         num_msgs = 10000
