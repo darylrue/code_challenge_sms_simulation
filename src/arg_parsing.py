@@ -1,7 +1,7 @@
 import sys
 
 
-def _parse_int_arg(arg: str, arg_name: str, req_positive: bool = False) -> int:
+def parse_int_arg(arg: str, arg_name: str, req_positive: bool = False) -> int:
     try:
         value = int(arg)
     except ValueError:
@@ -13,7 +13,7 @@ def _parse_int_arg(arg: str, arg_name: str, req_positive: bool = False) -> int:
     return value
 
 
-def _parse_float_arg(arg: str, arg_name: str, req_non_negative: bool = False) -> float:
+def parse_float_arg(arg: str, arg_name: str, req_non_negative: bool = False) -> float:
     try:
         value = float(arg)
     except ValueError:

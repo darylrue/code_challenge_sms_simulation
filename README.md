@@ -59,10 +59,10 @@ Activate the virtual environment:
 
 Run the simulation:
 ```shell
-python3 src/start.py <num_messages> <num_senders> <mean_processing_time> <max_deviation> <failure_rate>
+python3 start.py <num_messages> <num_senders> <mean_processing_time> <max_deviation> <failure_rate>
 
 example:
-python3 src/start.py 1000 4 0.01 0.001 0.2
+python3 start.py 10000 4 0.01 0.001 0.2
 ```
-Starts the simulation with 1000 messages, 4 senders, a mean message processing time of 0.01 seconds with a max
+Starts the simulation with 10000 messages, 4 senders, a mean message processing time of 0.01 seconds with a max
 deviation in message processing time of 0.001 seconds, and a message failure rate of 0.2 (i.e. 20%).
